@@ -5,7 +5,8 @@ const dotenv = require("dotenv");
 const app = express();
 dotenv.config();
 
-let userid = 0;
+let userId = 0;
+let exercisesId = 0;
 const users = [];
 const exercises = [];
 
@@ -15,6 +16,26 @@ app.use(express.json());
 app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
+});
+
+app.get("/api/users/:_id/exercises", (req, res) => {
+  const uId = req.params._id;
+  const user = users.find((user) => user._id === uId);
+  const exerc = exercises.filter((exercises) => exercises.id === uId);
+  const resetArr = [];
+  exerc.forEach((exercise) => {
+    const description = exercise.description;
+    const duration = exercise.duration;
+    let date = exercise.date.toDateString();
+
+    resetArr.push({ description, duration, date });
+  });
+  res.json({
+    username: user.username,
+    count: exerc.length,
+    _id: uId,
+    log: resetArr,
+  });
 });
 
 app.post("/api/users/:_id/exercises", (req, res) => {
@@ -27,11 +48,13 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   if (!date) date = new Date();
 
   exercises.push({
+    exercisesId: `${exercisesId++}`,
     id,
     description,
     duration,
     date,
   });
+  res.redirect("/");
 });
 
 app.get("/api/users", (req, res) => {
@@ -39,7 +62,7 @@ app.get("/api/users", (req, res) => {
 });
 app.post("/api/users", (req, res) => {
   const username = req.body.username;
-  const id = `${userid++}`;
+  const id = `${userId++}`;
   users.push({ username: username, _id: id });
   res.json({ username: username, _id: id });
 });
