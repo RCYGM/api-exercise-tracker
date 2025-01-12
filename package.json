@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "name": "api-exercise-tracker",
+  "version": "1.0.0",
+  "description": "FreeCodeCamp Exercise Tracker Exam",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RCYGM/api-exercise-tracker.git"
+  },
+  "keywords": [
+    "Exercise",
+    "Tracker",
+    "FreeCodeCamp"
+  ],
+  "author": "Jürgen Müller @emprende_legendario",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RCYGM/api-exercise-tracker/issues"
+  },
+  "homepage": "https://github.com/RCYGM/api-exercise-tracker#readme"
+}
