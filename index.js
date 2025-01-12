@@ -39,7 +39,7 @@ app.get("/api/users", (req, res) => {
 });
 app.post("/api/users", (req, res) => {
   const username = req.body.username;
-  const id = userid++;
+  const id = `${userid++}`;
   users.push({ username: username, _id: id });
   res.json({ username: username, _id: id });
 });
