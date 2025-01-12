@@ -7,6 +7,7 @@ dotenv.config();
 
 let userid = 0;
 const users = [];
+const exercises = [];
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
@@ -15,6 +16,24 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
+
+app.post("/api/users/:_id/exercises", (req, res) => {
+  console.log(req.body);
+  const id = req.body.id;
+  const description = req.body.description;
+  const duration = req.body.duration;
+  let date = req.body.date;
+
+  if (!date) date = new Date();
+
+  exercises.push({
+    id,
+    description,
+    duration,
+    date,
+  });
+});
+
 app.get("/api/users", (req, res) => {
   res.json(users);
 });

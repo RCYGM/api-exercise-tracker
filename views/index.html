@@ -22,7 +22,7 @@
         <input type="submit" value="Submit" />
       </fieldset>
     </form>
-    <form action="/api/users/:_id/exercises">
+    <form action="/api/users/:_id/exercises" method="post">
       <h2>Add exercises</h2>
       <fieldset>
         <label for="username">username</label>
@@ -33,6 +33,7 @@
           placeholder="username"
           required
         />
+
         <label for="description">description</label>
         <input
           type="text"
@@ -41,7 +42,8 @@
           placeholder="description"
           required
         />
-        <label for="duration">duration</label>
+
+        <label for="number">duration</label>
         <input
           type="number"
           id="duration-e"
@@ -50,8 +52,10 @@
           max="60"
           required
         />
-        <label for="duration">duration</label>
-        <input type="date" id="date-e" name="date" required />
+
+        <label for="date">duration</label>
+        <input type="date" id="date-e" name="date" />
+
         <label for="id">id</label>
         <input type="text" id="id-e" name="id" placeholder="id" required />
         <input type="submit" value="Submit" />
