@@ -40,7 +40,8 @@ app.get("/api/users/:_id/exercises", (req, res) => {
 
 app.post("/api/users/:_id/exercises", (req, res) => {
   console.log(req.body);
-  const id = req.body.id;
+  const id = req.params.id;
+  const username = req.body.username;
   const description = req.body.description;
   const duration = req.body.duration;
   let date = req.body.date;
@@ -54,7 +55,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     duration,
     date,
   });
-  res.redirect("/");
+  res.json({ username, description, duration, date, _id: id });
 });
 
 app.get("/api/users", (req, res) => {
