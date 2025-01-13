@@ -19,7 +19,7 @@ exerciseForm.addEventListener("submit", async (e) => {
     });
     const data = await response.json();
     console.log(data);
-    alert("¡Ejercicio agregado con éxito!");
+    window.location.href = `/api/users/${userId}/exercises`;
   } catch (err) {
     console.log("Error: ", err);
   }

@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
 
-app.get("/api/users/:_id/exercises", (req, res) => {
+app.get("/api/users/:_id/logs", (req, res) => {
   const uId = req.params._id;
   const user = users.find((user) => user._id === uId);
   const exerc = exercises.filter((exercises) => exercises.id === uId);
@@ -38,9 +38,41 @@ app.get("/api/users/:_id/exercises", (req, res) => {
   });
 });
 
+app.get("/api/users/:_id/exercises", (req, res) => {
+  const uId = req.params._id;
+  const user = users.find((user) => user._id === uId);
+  const exerc = exercises.filter((exercises) => exercises.id === uId);
+  const resetArr = [];
+  exerc.forEach((exercise) => {
+    const description = exercise.description;
+    const duration = exercise.duration;
+    let date = exercise.date.toDateString();
+
+    resetArr.push({ description, duration, date });
+  });
+  const lastExercise = resetArr.slice(-1)[0];
+
+  console.log("lastExercise", lastExercise);
+
+  res.json({
+    username: user.username,
+    description: lastExercise.description,
+    duration: lastExercise.duration,
+    date: lastExercise.date,
+    _id: uId,
+  });
+  /*
+  res.json({
+    username: user.username,
+    count: exerc.length,
+    _id: uId,
+    log: resetArr,
+  });*/
+});
+
 app.post("/api/users/:_id/exercises", (req, res) => {
-  console.log(req.body);
-  const id = req.params.id;
+  // console.log("body", req.body);
+  const id = req.params._id;
   const username = req.body.username;
   const description = req.body.description;
   const duration = req.body.duration;
