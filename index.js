@@ -6,8 +6,6 @@ const crypto = require("crypto");
 const app = express();
 dotenv.config();
 
-let userId = 0;
-let exercisesId = 0;
 const users = [];
 const exercises = [];
 
@@ -88,18 +86,19 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     ? new Date(date).toDateString()
     : new Date().toDateString();
 
-  exercises.push({
-    exercisesId: `${exercisesId++}`,
-    id,
+  const exercise = {
+    userId: id,
     description,
     duration: Number(duration),
     date: exerciseDate,
-  });
+  };
+
+  exercises.push(exercise);
   res.json({
     username: user.username,
-    description,
-    duration,
-    date: exerciseDate,
+    description: exercise.description,
+    duration: exercise.duration,
+    date: exercise.date,
     _id: id,
   });
 });
