@@ -79,7 +79,35 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
 });
 
 //Obtener Registro de Ejercicios
-app.get("/api/users/:_id/logs", async (req, res) => {});
+app.get("/api/users/:_id/logs", async (req, res) => {
+  const { _id } = req.params;
+  const { from, to, limit } = req.query;
+  const user = await User.findById(_id);
+  if (!user) return res.status(400).json({ error: "Usuario no encontrado." });
+
+  let filter = { userId: _id };
+  if (from || to) filter.date = {};
+  if (from) filter.date.$gte = new Date(from);
+  if (to) filter.date.$lte = new Date(to);
+
+  let exercisesQuery = Exercise.find(filter).select(
+    "description duration date"
+  );
+  if (limit) exercisesQuery = exercisesQuery.limit(parseInt(limit));
+
+  const log = (await exercisesQuery).map((e) => ({
+    description: e.description,
+    duration: e.duration,
+    date: e.date.toDateString(),
+  }));
+
+  res.json({
+    username: user.username,
+    count: log.length,
+    _id: user._id,
+    log,
+  });
+});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log("Servidor corriendo en el puerto " + listener.address().port);
