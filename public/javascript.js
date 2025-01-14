@@ -7,7 +7,6 @@ exerciseForm.addEventListener("submit", async (e) => {
   e.preventDefault(); // Evita que el formulario se recargue
 
   const userId = document.getElementById("id-e").value;
-  const username = document.getElementById("uname-e").value;
   const description = document.getElementById("description-e").value;
   const duration = document.getElementById("duration-e").value;
   const date = document.getElementById("date-e").value;
@@ -18,8 +17,12 @@ exerciseForm.addEventListener("submit", async (e) => {
       body: JSON.stringify({ description, duration, date }),
     });
     const data = await response.json();
-    console.log(data);
-    window.location.href = `/api/users/${userId}/exercises`;
+    console.log("data", data);
+
+    // ✅ Redirigir o mostrar confirmación
+    alert("Ejercicio agregado correctamente");
+
+    // window.location.href = `/api/users/${userId}/exercises`;
   } catch (err) {
     console.log("Error: ", err);
   }

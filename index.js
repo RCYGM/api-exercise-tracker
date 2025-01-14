@@ -42,8 +42,12 @@ app.get("/api/users/:_id/exercises", (req, res) => {
   const uId = req.params._id;
   const user = users.find((user) => user._id === uId);
   const exerc = exercises.filter((exercises) => exercises.id === uId);
+  console.log("exerc", exerc);
+
   const resetArr = [];
   exerc.forEach((exercise) => {
+    console.log("exercise forEach", exercise);
+
     const description = exercise.description;
     const duration = exercise.duration;
     let date = exercise.date.toDateString();
@@ -77,11 +81,13 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   if (!user) {
     return res.status(400).json({ error: "User not found" });
   }
-  const { description, duration, date } = req.body.description;
+  const { description, duration, date } = req.body;
 
   const exerciseDate = date
     ? new Date(date).toDateString()
     : new Date().toDateString();
+
+  console.log("exerciseDate", exerciseDate);
 
   exercises.push({
     exercisesId: `${exercisesId++}`,
@@ -90,7 +96,13 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     duration: Number(duration),
     date: exerciseDate,
   });
-  res.json({ username: user.username, description, duration, date, _id: id });
+  res.json({
+    username: user.username,
+    description,
+    duration,
+    date: exerciseDate,
+    _id: id,
+  });
 });
 
 app.get("/api/users", (req, res) => {
