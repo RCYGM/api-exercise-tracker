@@ -73,7 +73,7 @@ app.get("/api/users/:_id/exercises", (req, res) => {
 app.post("/api/users/:_id/exercises", (req, res) => {
   // console.log("body", req.body);
   const id = req.params._id;
-  const username = req.body.username;
+  const username = users.find((user) => user._id === id);
   const description = req.body.description;
   const duration = req.body.duration;
   let date = req.body.date;
