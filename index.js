@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const crypto = require("crypto");
 
 const app = express();
 dotenv.config();
@@ -87,8 +88,6 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     ? new Date(date).toDateString()
     : new Date().toDateString();
 
-  console.log("exerciseDate", exerciseDate);
-
   exercises.push({
     exercisesId: `${exercisesId++}`,
     id,
@@ -110,9 +109,9 @@ app.get("/api/users", (req, res) => {
 });
 app.post("/api/users", (req, res) => {
   const username = req.body.username;
-  const id = `${userId++}`;
+  const id = crypto.randomUUID(); // id unico
   users.push({ username: username, _id: id });
-  res.json({ username: username, _id: id });
+  res.json({ username, _id: id });
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
