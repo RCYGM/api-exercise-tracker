@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const crypto = require("crypto");
+const { count } = require("console");
 
 const app = express();
 dotenv.config();
@@ -18,22 +19,36 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/users/:_id/logs", (req, res) => {
-  const uId = req.params._id;
-  const user = users.find((user) => user._id === uId);
-  const exerc = exercises.filter((exercises) => exercises.id === uId);
-  const resetArr = [];
-  exerc.forEach((exercise) => {
-    const description = exercise.description;
-    const duration = exercise.duration;
-    let date = exercise.date.toDateString();
+  const id = req.params._id;
+  const { from, to, limit } = req.query;
 
-    resetArr.push({ description, duration, date });
-  });
+  const user = users.find((user) => user._id === id);
+  if (!user) return res.status(400).json({ error: "User not found" });
+
+  let log = exercises.filter((exercise) => exercise.user.id === id);
+
+  if (from) {
+    const fromDate = new Date(from);
+    log = log.filter((exercise) => new Date(exercise.date) >= fromDate);
+  }
+
+  if (to) {
+    const toDate = new Date(to);
+    log = log.filter((exercise) => new Date(exercise.date) <= toDate);
+  }
+
+  if (limit) {
+    log = log.slice(0, parseInt(limit));
+  }
   res.json({
     username: user.username,
-    count: exerc.length,
-    _id: uId,
-    log: resetArr,
+    count: log.length,
+    _id: id,
+    log: log.map(({ description, duration, date }) => ({
+      description,
+      duration,
+      date,
+    })),
   });
 });
 
