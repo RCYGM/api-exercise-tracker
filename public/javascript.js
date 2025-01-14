@@ -13,8 +13,8 @@ exerciseForm.addEventListener("submit", async (e) => {
   try {
     const response = await fetch(`/api/users/${userId}/exercises`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ description, duration, date }),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: JSON.stringify(),
     });
     const data = await response.json();
     console.log("data", data);
