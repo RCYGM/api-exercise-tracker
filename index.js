@@ -54,7 +54,32 @@ app.get("/api/users", async (req, res) => {
 // Agregar Ejercicio
 app.post("/api/users/:_id/exercises", async (req, res) => {
   const { _id } = req.params;
+  const { description, duration, date } = req.body;
+  const user = await User.findById(_id);
+
+  if (!user) return res.status(400).json({ error: "Usuario no encontrado." });
+
+  const exerciseDate = date ? new Date(date) : new Date();
+  const newExercise = new Exercise({
+    userId: user._id,
+    description,
+    duration: parseInt(duration),
+    date: exerciseDate,
+  });
+
+  await newExercise.save();
+
+  res.json({
+    username: user.username,
+    description: newExercise.description,
+    duration: newExercise.duration,
+    date: newExercise.date.toDateString(),
+    _id: user._id,
+  });
 });
+
+//Obtener Registro de Ejercicios
+app.get("/api/users/:_id/logs", async (req, res) => {});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log("Servidor corriendo en el puerto " + listener.address().port);
