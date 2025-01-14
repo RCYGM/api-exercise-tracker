@@ -14,7 +14,7 @@ exerciseForm.addEventListener("submit", async (e) => {
     const response = await fetch(`/api/users/${userId}/exercises`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: JSON.stringify(),
+      body: new URLSearchParams({ description, duration, date }),
     });
     const data = await response.json();
     console.log("data", data);
